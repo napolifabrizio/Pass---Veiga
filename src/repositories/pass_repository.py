@@ -10,7 +10,7 @@ class PassRepo():
             statement = select(table)
             result = session.exec(statement).all()
         return result
-    
+
     @staticmethod
     def get_password(id_item, table):
         with Session(engine) as session:
@@ -28,7 +28,7 @@ class PassRepo():
             session.add(password)
             session.commit()
         return True
-    
+
     def put_password(id_item, new_password, table):
         with Session(engine) as session:
             statement = select(table).where(table.id == id_item)
@@ -43,9 +43,9 @@ class PassRepo():
             session.add(old_password)
             session.commit()
             session.refresh(old_password)
-        
+
         return True
-    
+
     @staticmethod
     def delete_password(id_password, table):
         with Session(engine) as session:

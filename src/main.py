@@ -26,7 +26,7 @@ def post_password(password: PassTable):
 
 @app.put('/update_password/{id_item}')
 def put_password(id_item: int, password: PassTable):
-    PassRepo.put_password(id_item, password, PassTable) 
+    PassRepo.put_password(id_item, password, PassTable)
     return 'Password atualizada'
 
 @app.delete('/delete_password/{id_item}')
