@@ -1,37 +1,40 @@
 from sqlmodel import Session, select
 
-from config.connection import engine, PassTable
+from repositories.user_repository import UserRepo
+
+from config.connection import engine, PassTable, UserTable
 
 class PassRepo():
 
     @staticmethod
-    def get_passwords(table):
+    def get_all_accounts(table):
         with Session(engine) as session:
             statement = select(table)
             result = session.exec(statement).all()
         return result
 
     @staticmethod
-    def get_password(id_item, table):
+    def get_account_passwords(codcli, table):
         with Session(engine) as session:
             try:
-                statement = select(table).where(table.id == id_item)
-                result = session.exec(statement)
-                password = result.one()
+                statement = select(table).where(table.codcli == codcli)
+                result = session.exec(statement).all()
             except:
                 return 'Não encontrado :('
-        return password
+        return result
 
     @staticmethod
     def post_password(password: PassTable):
+        if UserRepo.get_account(password.codcli):
+            return "Usuário não existe"
         with Session(engine) as session:
             session.add(password)
             session.commit()
         return True
 
-    def put_password(id_item, new_password, table):
+    def put_password(id_password, new_password, table):
         with Session(engine) as session:
-            statement = select(table).where(table.id == id_item)
+            statement = select(table).where(table.id == id_password)
             result = session.exec(statement)
             old_password = result.one()
 

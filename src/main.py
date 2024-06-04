@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from config.connection import PassTable
+from config.connection import PassTable, UserTable
+from repositories.user_repository import UserRepo
 from repositories.pass_repository import PassRepo
 
 app = FastAPI()
@@ -9,17 +10,17 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-@app.get('/get_passwords')
-def get_passwords():
-    passwords = PassRepo.get_passwords(PassTable)
+@app.get('/get_all_accounts')
+def get_all_accounts():
+    passwords = PassRepo.get_all_accounts(PassTable)
     return passwords
 
-@app.get('/get_password/{id_password}')
-def get_passwords(id_password: int):
-    password = PassRepo.get_password(id_password, PassTable)
+@app.get('/get_account_passwords/{id_password}')
+def get_account_passwords(id_password: int):
+    password = PassRepo.get_account_passwords(id_password, PassTable)
     return password
 
-@app.post('/insert')
+@app.post('/insert_password')
 def post_password(password: PassTable):
     PassRepo.post_password(password)
     return 'Password guardada!'
@@ -33,3 +34,8 @@ def put_password(id_item: int, password: PassTable):
 def delete_password(id_item: int):
     PassRepo.delete_password(id_item, PassTable)
     return 'Password deletada'
+
+@app.post('/insert_user')
+def post_user(user: UserTable):
+    UserRepo.post_user(user)
+    return 'User cadastrado!'

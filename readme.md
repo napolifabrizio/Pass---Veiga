@@ -17,3 +17,5 @@
 ## Observações
 
 -   Para você que vai dar um clone no projeto, só tem como visualizar o banco de dados se baixar a extensão "SQLite Viwer"
+
+- "uvicorn main:app --reload" comando para rodar o server

@@ -1,9 +1,17 @@
 from sqlmodel import SQLModel, create_engine, Field
 from typing import Optional, Union
 
+class UserTable(SQLModel, table=True):
+
+    codcli: Optional[int] = Field(primary_key=True)
+    name: Union[str, None]
+    email: str
+    password: Union[str, None]
+
 class PassTable(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
+    codcli: int = Field(foreign_key="usertable.codcli")
     name: Union[str, None]
     password: Union[str, None]
 
