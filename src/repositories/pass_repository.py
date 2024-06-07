@@ -6,18 +6,19 @@ from config.connection import engine, PassTable, UserTable
 
 class PassRepo():
 
-    @staticmethod
-    def get_all_accounts(table):
-        with Session(engine) as session:
-            statement = select(table)
-            result = session.exec(statement).all()
-        return result
+    # ! Estudando utilidade
+    # @staticmethod
+    # def get_all_accounts(table):
+    #     with Session(engine) as session:
+    #         statement = select(table)
+    #         result = session.exec(statement).all()
+    #     return result
 
     @staticmethod
-    def get_account_passwords(codcli, table):
+    def get_account_passwords(codcli):
         with Session(engine) as session:
             try:
-                statement = select(table).where(table.codcli == codcli)
+                statement = select(PassTable).where(PassTable.codcli == codcli)
                 result = session.exec(statement).all()
             except:
                 return 'Não encontrado :('
