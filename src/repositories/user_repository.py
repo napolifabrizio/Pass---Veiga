@@ -6,9 +6,12 @@ class UserRepo():
 
     @staticmethod
     def post_user(user: UserTable):
-        with Session(engine) as session:
-            session.add(user)
-            session.commit()
+        try:
+            with Session(engine) as session:
+                session.add(user)
+                session.commit()
+        except Exception as error:
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
         return True
 
     @staticmethod
@@ -17,7 +20,15 @@ class UserRepo():
             try:
                 statement = select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement).one()
-            except:
-                return 'Não encontrado :('
+            except Exception as error:
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
         print(result)
         return result
+
+    def delete_user(self, codcli):
+        with self.session(self.engine) as session:
+            statement = self.select(UserTable).where(UserTable.codcli == codcli)
+            result = session.exec(statement)
+            password = result.one()
+            session.delete(password)
+            session.commit()
