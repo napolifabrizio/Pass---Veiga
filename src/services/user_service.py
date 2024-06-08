@@ -22,6 +22,7 @@ class UserService():
 
     def add_password(self, password: PassManagerTable):
         try:
+            print(password)
             password.password = self._crypt.cripto(password.password)
             self._pass_manager.post_password(password)
         except Exception as error:

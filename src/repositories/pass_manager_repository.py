@@ -1,7 +1,7 @@
+from sqlmodel import Session, select
+
+from config.connection import PassManagerTable, engine
 from repositories.father import Father
-
-from config.connection import PassManagerTable
-
 from repositories.user_repository import UserRepo
 
 
@@ -17,9 +17,9 @@ class PassManagerRepo(Father):
         return result
 
     def post_password(self, password: PassManagerTable):
-        if UserRepo.get_account(password.codcli):
+        if not UserRepo.get_account(password.codcli):
             return "Usuário não existe"
-        with self.session(self.engine) as session:
+        with Session(engine) as session:
             print(password)
             session.add(password)
             session.commit()

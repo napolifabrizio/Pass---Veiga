@@ -10,7 +10,7 @@ class UserTable(SQLModel, table=True):
 
 class PassManagerTable(SQLModel, table=True):
 
-    id_password: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(primary_key=True)
     codcli: int = Field(foreign_key="usertable.codcli")
     name: Union[str, None]
     password: Union[str, None]

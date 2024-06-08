@@ -20,10 +20,10 @@ class UserRepo():
             try:
                 statement = select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement).one()
+                print(result)
+                return result
             except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
-        print(result)
-        return result
 
     def delete_user(self, codcli):
         with self.session(self.engine) as session:

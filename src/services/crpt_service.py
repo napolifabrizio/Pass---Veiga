@@ -7,9 +7,8 @@ class CryptService():
         self._f = Fernet(self._key)
 
     def cripto(self, password: str):
-        password_encode = password
-        password_encode = str(password_encode).encode()
-        token = self._f.encrypt(password)
+        password_encode = password.encode()
+        token = self._f.encrypt(password_encode)
         return token
 
     def decrypt(self, token):
