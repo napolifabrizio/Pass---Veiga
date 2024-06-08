@@ -10,49 +10,50 @@ class UserService():
     def __init__(self) -> None:
         self._crypt = CryptService()
         self._user_repo = UserRepo()
-        self._pass_manager = PositionManagerRepo()
+        self._position_manager = PositionManagerRepo()
 
-    def get_my_passwords(self, codcli):
+    def get_my_positions(self, codcli):
         try:
-            my_passwords = self._pass_manager.get_account_passwords(codcli)
+            my_positions = self._position_manager.get_account_positions(codcli)
+            for position in my_positions:
+                position.password = self._crypt.decrypt(position.password)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
-        return my_passwords
+        return my_positions
 
-    def add_password(self, password: PositionTable):
+    def add_position(self, position: PositionTable):
         try:
-            print(password)
-            password.password = self._crypt.cripto(password.password)
-            self._pass_manager.post_password(password)
+            position.password = self._crypt.cripto(position.password)
+            self._position_manager.post_position(position)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
 
-    def update_password(self, id_password):
+    def update_position(self, id_password):
         try:
-            self._pass_manager.put_password(id_password)
+            self._position_manager.put_position(id_password)
             return True
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
 
-    def delete_password(self, id_password):
+    def delete_position(self, id_password):
         try:
-            self._pass_manager.delete_password(id_password)
+            self._position_manager.delete_position(id_password)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
 
     def delete_my_account(self, codcli):
         try:
-            self._pass_manager.delete_all_passwords(codcli)
+            self._position_manager.delete_all_positions(codcli)
             self._user_repo.delete_user(codcli)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
 
-    def add_user(self, user):
+    def create_my_account(self, user):
         try:
             self._user_repo.post_user(user)
         except Exception as error:

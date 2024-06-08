@@ -13,7 +13,7 @@ class PositionTable(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True)
     codcli: int = Field(foreign_key="usertable.codcli")
     name: Union[str, None]
-    password: Union[str, None]
+    password: Union[bytes, None]
 
 engine = create_engine("sqlite:///database.sqlite")
 
