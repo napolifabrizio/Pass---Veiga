@@ -20,6 +20,7 @@ class PassManagerRepo(Father):
         if UserRepo.get_account(password.codcli):
             return "Usuário não existe"
         with self.session(self.engine) as session:
+            print(password)
             session.add(password)
             session.commit()
         return True

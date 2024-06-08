@@ -1,13 +1,14 @@
 from cryptography.fernet import Fernet
 
-class Crypt():
+class CryptService():
 
     def __init__(self) -> None:
         self._key = Fernet.generate_key()
         self._f = Fernet(self._key)
 
     def cripto(self, password: str):
-        password = password.encode()
+        password_encode = password
+        password_encode = str(password_encode).encode()
         token = self._f.encrypt(password)
         return token
 
