@@ -1,11 +1,13 @@
-from sqlmodel import Session, select
-
-from config.connection import PassManagerTable, engine
+from config.connection import PassManagerTable
 from repositories.father import Father
 from repositories.user_repository import UserRepo
 
 
 class PassManagerRepo(Father):
+
+    def __init__(self) -> None:
+        self._user_repo = UserRepo()
+        super().__init__()
 
     def get_account_passwords(self, codcli):
         with self.session(self.engine) as session:
@@ -19,8 +21,7 @@ class PassManagerRepo(Father):
     def post_password(self, password: PassManagerTable):
         if not UserRepo.get_account(password.codcli):
             return "Usuário não existe"
-        with Session(engine) as session:
-            print(password)
+        with self.session(self.engine) as session:
             session.add(password)
             session.commit()
         return True

@@ -26,7 +26,7 @@ def user_post_password(password: PassManagerTable):
     user_service.add_password(password)
     return "Senha guardada!"
 
-@app.delete("/user/delete_my_account")
+@app.delete("/user/delete_my_account/{codcli}")
 def delete_my_account(codcli):
     user_service.delete_my_account(codcli)
     return "Conta deletada!"

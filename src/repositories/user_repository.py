@@ -1,24 +1,22 @@
-from sqlmodel import Session, select
+from config.connection import UserTable
+from repositories.father import Father
 
-from config.connection import engine, UserTable
 
-class UserRepo():
+class UserRepo(Father):
 
-    @staticmethod
-    def post_user(user: UserTable):
+    def post_user(self, user: UserTable):
         try:
-            with Session(engine) as session:
+            with self.session(self.engine) as session:
                 session.add(user)
                 session.commit()
         except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
         return True
 
-    @staticmethod
-    def get_account(codcli):
-        with Session(engine) as session:
+    def get_account(self, codcli):
+        with self.session(self.engine) as session:
             try:
-                statement = select(UserTable).where(UserTable.codcli == codcli)
+                statement = self.select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement).one()
                 print(result)
                 return result
