@@ -1,9 +1,9 @@
-from config.connection import PassManagerTable
+from config.connection import PositionTable
 from repositories.father import Father
 from repositories.user_repository import UserRepo
 
 
-class PassManagerRepo(Father):
+class PositionManagerRepo(Father):
 
     def __init__(self) -> None:
         self._user_repo = UserRepo()
@@ -12,13 +12,13 @@ class PassManagerRepo(Father):
     def get_account_passwords(self, codcli):
         with self.session(self.engine) as session:
             try:
-                statement = self.select(PassManagerTable).where(PassManagerTable.codcli == codcli)
+                statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
                 result = session.exec(statement).all()
             except:
                 return 'Não encontrado :('
         return result
 
-    def post_password(self, password: PassManagerTable):
+    def post_password(self, password: PositionTable):
         if not UserRepo.get_account(password.codcli):
             return "Usuário não existe"
         with self.session(self.engine) as session:
@@ -28,7 +28,7 @@ class PassManagerRepo(Father):
 
     def put_password(self, id_password, new_password):
         with self.session(self.engine) as session:
-            statement = self.select(PassManagerTable).where(PassManagerTable.id == id_password)
+            statement = self.select(PositionTable).where(PositionTable.id == id_password)
             result = session.exec(statement)
             old_password = result.one()
 
@@ -45,7 +45,7 @@ class PassManagerRepo(Father):
 
     def delete_password(self, id_password):
         with self.session(self.engine) as session:
-            statement = self.select(PassManagerTable).where(PassManagerTable.id == id_password)
+            statement = self.select(PositionTable).where(PositionTable.id == id_password)
             result = session.exec(statement)
             password = result.one()
             session.delete(password)
@@ -53,7 +53,7 @@ class PassManagerRepo(Father):
 
     def delete_all_passwords(self, codcli):
         with self.session(self.engine) as session:
-            statement = self.select(PassManagerTable).where(PassManagerTable.codcli == codcli)
+            statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
             result = session.exec(statement)
             passwords = result.all()
             for password in passwords:

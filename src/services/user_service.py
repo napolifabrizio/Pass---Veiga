@@ -1,16 +1,16 @@
 import traceback
 
-from config.connection import PassManagerTable
-from repositories.pass_manager_repository import PassManagerRepo
-from repositories.user_repository import UserRepo
+from config.connection import PositionTable
 from services.crpt_service import CryptService
+from repositories.position_manager_repository import PositionManagerRepo
+from repositories.user_repository import UserRepo
 
 class UserService():
 
     def __init__(self) -> None:
         self._crypt = CryptService()
         self._user_repo = UserRepo()
-        self._pass_manager = PassManagerRepo()
+        self._pass_manager = PositionManagerRepo()
 
     def get_my_passwords(self, codcli):
         try:
@@ -20,7 +20,7 @@ class UserService():
             print(traceback.format_exc())
         return my_passwords
 
-    def add_password(self, password: PassManagerTable):
+    def add_password(self, password: PositionTable):
         try:
             print(password)
             password.password = self._crypt.cripto(password.password)

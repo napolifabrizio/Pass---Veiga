@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from config.connection import UserTable, PassManagerTable
+from config.connection import UserTable, PositionTable
 
 from services.user_service import UserService
 
@@ -22,7 +22,7 @@ def user_post_password(codcli):
     return True
 
 @app.post("/user/post_password")
-def user_post_password(password: PassManagerTable):
+def user_post_password(password: PositionTable):
     user_service.add_password(password)
     return "Senha guardada!"
 
