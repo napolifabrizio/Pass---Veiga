@@ -36,7 +36,7 @@ def post_position(position: PositionTable):
     user_service.add_position(position)
     return "Position criado!"
 
-@app.delete("user/delete_position/{id}")
+@app.delete("/user/delete_position/{id}")
 def delete_position(id):
     user_service.delete_position(id)
     return "Position deletado!"
