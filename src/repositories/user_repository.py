@@ -23,7 +23,7 @@ class UserRepo(Father):
             except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
-    def delete_user(self, codcli):
+    def delete_my_user(self, codcli):
         with self.session(self.engine) as session:
             statement = self.select(UserTable).where(UserTable.codcli == codcli)
             result = session.exec(statement)

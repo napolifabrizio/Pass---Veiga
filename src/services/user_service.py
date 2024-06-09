@@ -22,7 +22,7 @@ class UserService():
     def delete_my_account(self, codcli):
         try:
             self._position_manager.delete_all_positions(codcli)
-            self._user_repo.delete_user(codcli)
+            self._user_repo.delete_my_user(codcli)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
