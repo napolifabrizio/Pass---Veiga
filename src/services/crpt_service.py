@@ -4,15 +4,18 @@ class CryptService():
 
     def __init__(self) -> None:
         self._key = Fernet.generate_key()
-        self._f = Fernet(self._key)
 
-    def cripto(self, password: str):
+    def cripto(self, password: str, key):
         password_encode = password.encode()
-        token = self._f.encrypt(password_encode)
+        token = Fernet(key).encrypt(password_encode)
         return token
 
-    def decrypt(self, token):
-        password = self._f.decrypt(token)
+    def decrypt(self, token, key):
+        password = Fernet(key).decrypt(token)
         password = password.decode()
         return password
+
+    @property
+    def key(self):
+        return self._key
 

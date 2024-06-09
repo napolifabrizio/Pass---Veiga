@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
 from config.connection import UserTable, PositionTable
-
 from services.user_service import UserService
 
 app = FastAPI()
@@ -26,14 +25,14 @@ def delete_my_account(codcli):
     user_service.delete_my_account(codcli)
     return "Conta deletada!"
 
-@app.get("/user/get_my_passwords/{codcli}")
+@app.get("/user/get_my_positions/{codcli}")
 def get_my_passwords(codcli):
     positions = user_service.get_my_positions(codcli)
     return positions
 
 @app.post("/user/post_position")
 def post_position(position: PositionTable):
-    user_service.add_position(position)
+    user_service.post_position(position)
     return "Position criado!"
 
 @app.delete("/user/delete_position/{id}")

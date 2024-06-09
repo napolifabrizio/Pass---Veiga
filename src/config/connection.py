@@ -10,10 +10,11 @@ class UserTable(SQLModel, table=True):
 
 class PositionTable(SQLModel, table=True):
 
-    id: Optional[int] = Field(primary_key=True)
+    id_position: Optional[int] = Field(primary_key=True)
     codcli: int = Field(foreign_key="usertable.codcli")
     name: Union[str, None]
     password: Union[bytes, None]
+    key: bytes
 
 engine = create_engine("sqlite:///database.sqlite")
 

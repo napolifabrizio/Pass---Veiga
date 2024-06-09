@@ -16,15 +16,16 @@ class UserService():
         try:
             my_positions = self._position_manager.get_account_positions(codcli)
             for position in my_positions:
-                position.password = self._crypt.decrypt(position.password)
+                position.password = self._crypt.decrypt(position.password, position.key)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
         return my_positions
 
-    def add_position(self, position: PositionTable):
+    def post_position(self, position: PositionTable):
         try:
-            position.password = self._crypt.cripto(position.password)
+            position.key = self._crypt.key
+            position.password = self._crypt.cripto(position.password, position.key)
             self._position_manager.post_position(position)
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
