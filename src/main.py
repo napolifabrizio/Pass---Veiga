@@ -16,7 +16,7 @@ async def root():
 #--------------------------------------------------#
 
 @app.post("/user/post_user")
-def post_user(user: UserTable):
+def create_user(user: UserTable):
     user_service.create_my_account(user)
     return "User criado!"
 
@@ -34,6 +34,11 @@ def get_my_passwords(codcli):
 def post_position(position: PositionTable):
     user_service.post_position(position)
     return "Position criado!"
+
+@app.put("/user/put_position/{id_position}")
+def put_position(id_position, position: PositionTable):
+    user_service.update_position(id_position, position)
+    return "Position atualizado!"
 
 @app.delete("/user/delete_position/{id}")
 def delete_position(id):

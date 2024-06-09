@@ -12,6 +12,21 @@ class UserService():
         self._user_repo = UserRepo()
         self._position_manager = PositionManagerRepo()
 
+    def create_my_account(self, user):
+        try:
+            self._user_repo.post_user(user)
+        except Exception as error:
+            print(f'Aconteceu um erro desconhecido no UserService: {error}')
+            print(traceback.format_exc())
+
+    def delete_my_account(self, codcli):
+        try:
+            self._position_manager.delete_all_positions(codcli)
+            self._user_repo.delete_user(codcli)
+        except Exception as error:
+            print(f'Aconteceu um erro desconhecido no UserService: {error}')
+            print(traceback.format_exc())
+
     def get_my_positions(self, codcli):
         try:
             my_positions = self._position_manager.get_account_positions(codcli)
@@ -31,9 +46,9 @@ class UserService():
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
 
-    def update_position(self, id_password):
+    def update_position(self, id_password, new_position):
         try:
-            self._position_manager.put_position(id_password)
+            self._position_manager.put_position(id_password, new_position)
             return True
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
@@ -45,22 +60,3 @@ class UserService():
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no UserService: {error}')
             print(traceback.format_exc())
-
-    def delete_my_account(self, codcli):
-        try:
-            self._position_manager.delete_all_positions(codcli)
-            self._user_repo.delete_user(codcli)
-        except Exception as error:
-            print(f'Aconteceu um erro desconhecido no UserService: {error}')
-            print(traceback.format_exc())
-
-    def create_my_account(self, user):
-        try:
-            self._user_repo.post_user(user)
-        except Exception as error:
-            print(f'Aconteceu um erro desconhecido no UserService: {error}')
-            print(traceback.format_exc())
-
-
-
-
