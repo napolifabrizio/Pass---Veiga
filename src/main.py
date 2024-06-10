@@ -8,7 +8,6 @@ app = FastAPI()
 
 user_service = UserService()
 admin_service = AdminService()
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -18,7 +17,7 @@ async def root():
 #--------------------------------------------------#
 
 @app.post("/user/post_user")
-def create_user(user: UserTable):
+def post_user(user: UserTable):
     user_service.create_my_account(user)
     return "User criado!"
 
@@ -29,12 +28,12 @@ def delete_my_account(codcli):
 
 @app.get("/user/get_my_positions/{codcli}")
 def get_my_positions(codcli):
-    positions = user_service.get_my_positions(codcli)
-    return positions
+    my_positions = user_service.get_my_positions(codcli)
+    return my_positions
 
 @app.post("/user/post_position")
 def post_position(position: PositionTable):
-    user_service.post_position(position)
+    user_service.create_position(position)
     return "Position criado!"
 
 @app.put("/user/put_position/{id_position}")
@@ -52,7 +51,7 @@ def delete_position(id):
 #--------------------------------------------------#
 
 @app.post("/admin/post_user")
-def create_user(user: UserTable):
+def post_user(user: UserTable):
     admin_service.create_user(user)
     return "User criado!"
 

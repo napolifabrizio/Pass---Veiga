@@ -12,19 +12,19 @@ class AdminRepo(Father):
         self._position_manager = PositionManagerRepo()
         super().__init__()
 
-    def create_user(self, user: UserTable):
+    def insert_user(self, user: UserTable):
         with self.session(self.engine) as session:
             session.add(user)
             session.commit()
         return True
 
-    def get_all_accounts(self):
+    def select_all_accounts(self):
         with self.session(self.engine) as session:
             statement = self.select(PositionTable)
             result = session.exec(statement).all()
         return result
 
-    def get_account_positions(self, codcli):
+    def select_account_positions(self, codcli):
         with self.session(self.engine) as session:
             try:
                 statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
@@ -33,7 +33,7 @@ class AdminRepo(Father):
                 return 'Não encontrado :('
         return result
 
-    def delete_all_positions_of_user(self, codcli):
+    def delete_all_user_positions(self, codcli):
         with self.session(self.engine) as session:
             statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
             result = session.exec(statement)
