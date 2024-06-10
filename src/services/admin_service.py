@@ -17,8 +17,13 @@ class AdminService():
         except Exception as error:
             print(f'Aconteceu um erro desconhecido no AdminService: {error}')
             print(traceback.format_exc())
-    
-    
+
+    def delete_user(self, codcli):
+        try:
+            self._admin_repo.delete_user(codcli)
+        except Exception as error:
+            print(f'Aconteceu um erro desconhecido no AdminService: {error}')
+            print(traceback.format_exc())
 
     def get_all_accounts(self):
         try:
@@ -35,3 +40,10 @@ class AdminService():
             print(f'Aconteceu um erro desconhecido no AdminService: {error}')
             print(traceback.format_exc())
         return accounts_positions
+
+    def delete_all_user_positions(self, codcli):
+        try:
+            self._admin_repo.delete_all_positions_of_user(codcli)
+        except Exception as error:
+            print(f'Aconteceu um erro desconhecido no AdminService: {error}')
+            print(traceback.format_exc())

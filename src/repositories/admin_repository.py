@@ -10,6 +10,7 @@ class AdminRepo(Father):
     def __init__(self) -> None:
         self._user_repo = UserRepo()
         self._position_manager = PositionManagerRepo()
+        super().__init__()
 
     def create_user(self, user: UserTable):
         with self.session(self.engine) as session:
@@ -17,9 +18,9 @@ class AdminRepo(Father):
             session.commit()
         return True
 
-    def get_all_accounts(self, table):
+    def get_all_accounts(self):
         with self.session(self.engine) as session:
-            statement = self.select(table)
+            statement = self.select(PositionTable)
             result = session.exec(statement).all()
         return result
 

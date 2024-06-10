@@ -2,10 +2,12 @@ from fastapi import FastAPI
 
 from config.connection import UserTable, PositionTable
 from services.user_service import UserService
+from services.admin_service import AdminService
 
 app = FastAPI()
 
 user_service = UserService()
+admin_service = AdminService()
 
 @app.get("/")
 async def root():
@@ -26,7 +28,7 @@ def delete_my_account(codcli):
     return "Conta deletada!"
 
 @app.get("/user/get_my_positions/{codcli}")
-def get_my_passwords(codcli):
+def get_my_positions(codcli):
     positions = user_service.get_my_positions(codcli)
     return positions
 
@@ -48,3 +50,28 @@ def delete_position(id):
 #--------------------------------------------------#
 #                      Admin                       #
 #--------------------------------------------------#
+
+@app.post("/admin/post_user")
+def create_user(user: UserTable):
+    admin_service.create_user(user)
+    return "User criado!"
+
+@app.delete("/admin/delete_user/{codcli}")
+def delete_user(codcli):
+    admin_service.delete_user(codcli)
+    return "Conta deletada!"
+
+@app.get("/admin/get_user_positions/{codcli}")
+def get_user_positions(codcli):
+    positions = admin_service.get_accounts_positions(codcli)
+    return positions
+
+@app.get("/admin/get_all_positions")
+def get_all_positions():
+    positions = admin_service.get_all_accounts()
+    return positions
+
+@app.delete("/admin/delete_user_positions/{codcli}")
+def delete_user_positions(codcli):
+    admin_service.delete_all_user_positions(codcli)
+    return "Positions deletados"
