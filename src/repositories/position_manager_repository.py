@@ -9,7 +9,7 @@ class PositionManagerRepo(Father):
         self._user_repo = UserRepo()
         super().__init__()
 
-    def select_account_positions(self, codcli):
+    def get_account_positions(self, codcli):
         with self.session(self.engine) as session:
             try:
                 statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
@@ -18,7 +18,7 @@ class PositionManagerRepo(Father):
                 return 'Não encontrado :('
         return result
 
-    def insert_position(self, position: PositionTable):
+    def post_position(self, position: PositionTable):
         if not self._user_repo.get_account(position.codcli):
             return "Usuário não existe"
         with self.session(self.engine) as session:
@@ -26,7 +26,7 @@ class PositionManagerRepo(Father):
             session.commit()
         return True
 
-    def update_position(self, id_position, new_position):
+    def put_position(self, id_position, new_position):
         with self.session(self.engine) as session:
             statement = self.select(PositionTable).where(PositionTable.id == id_position)
             result = session.exec(statement)
