@@ -1,10 +1,8 @@
-import traceback
-
 from config.connection import PositionTable
-from services.crpt_service import CryptService
 from repositories.position_manager_repository import PositionManagerRepo
 from repositories.user_repository import UserRepo
 from services.exceptions import treat_exception
+from services.crpt_service import CryptService
 class UserService():
 
     def __init__(self) -> None:

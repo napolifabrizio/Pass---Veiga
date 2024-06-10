@@ -1,6 +1,4 @@
 from services.exceptions import treat_exception
-from config.connection import PositionTable
-from services.crpt_service import CryptService
 from repositories.position_manager_repository import PositionManagerRepo
 from repositories.admin_repository import AdminRepo
 
