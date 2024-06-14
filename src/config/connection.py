@@ -7,6 +7,7 @@ class UserTable(SQLModel, table=True):
     name: Union[str, None]
     email: str
     password: Union[str, None]
+    is_admin: bool
 
 class PositionTable(SQLModel, table=True):
 
