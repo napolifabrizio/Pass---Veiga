@@ -13,9 +13,10 @@ class UserService():
 
     def create_my_account(self, user):
         try:
-            self._user_repo.insert_user(user)
+            return self._user_repo.insert_user(user)
         except Exception as error:
             treat_exception(error, 'UserService')
+        return False
 
     def login(self, email, password):
         try:

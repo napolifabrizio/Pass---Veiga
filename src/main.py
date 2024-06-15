@@ -18,8 +18,7 @@ async def root():
 
 @app.post("/user/post_user")
 def post_user(user: UserTable):
-    user_service.create_my_account(user)
-    return "User criado!"
+    return user_service.create_my_account(user)
 
 @app.post("/user/login/{email}/{password}")
 def post_login_user(email, password):

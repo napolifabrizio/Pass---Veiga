@@ -5,7 +5,7 @@ class UserTable(SQLModel, table=True):
 
     codcli: Optional[int] = Field(primary_key=True)
     name: Union[str, None]
-    email: str
+    email: str = Field(unique=True)
     password: Union[str, None]
     is_admin: bool
 

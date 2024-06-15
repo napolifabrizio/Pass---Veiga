@@ -4,14 +4,16 @@ from repositories.father import Father
 
 class UserRepo(Father):
 
-    def post_user(self, user: UserTable):
+    def insert_user(self, user: UserTable):
         try:
             with self.session(self.engine) as session:
                 session.add(user)
                 session.commit()
+                return_user = self.get_account(user.codcli)
+            return return_user
         except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
-        return True
+        return False
 
     def login(self, email, password):
         user_login = ''
