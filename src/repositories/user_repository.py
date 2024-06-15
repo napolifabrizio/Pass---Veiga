@@ -13,6 +13,20 @@ class UserRepo(Father):
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
         return True
 
+    def login(self, email, password):
+        user_login = ''
+        with self.session(self.engine) as session:
+            statement = self.select(UserTable)
+            users = session.exec(statement).all()
+        for user in users:
+            if email == user.email:
+                user_login = user
+                break
+        if password == user_login.password:
+            return user_login.codcli, user_login.name
+        return False
+
+
     def get_account(self, codcli):
         with self.session(self.engine) as session:
             try:

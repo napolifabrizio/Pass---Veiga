@@ -21,6 +21,10 @@ def post_user(user: UserTable):
     user_service.create_my_account(user)
     return "User criado!"
 
+@app.post("/user/login/{email}/{password}")
+def post_login_user(email, password):
+    return user_service.login(email, password)
+
 @app.delete("/user/delete_my_account/{codcli}")
 def delete_my_account(codcli):
     user_service.delete_my_account(codcli)
