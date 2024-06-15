@@ -23,7 +23,10 @@ class UserRepo(Father):
                 user_login = user
                 break
         if password == user_login.password:
-            return user_login.codcli, user_login.name
+            return {
+                "codcli": user_login.codcli,
+                "name": user_login.name
+            }
         return False
 
 
