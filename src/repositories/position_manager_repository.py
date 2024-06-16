@@ -18,7 +18,7 @@ class PositionManagerRepo(Father):
                 return 'Não encontrado :('
         return result
 
-    def post_position(self, position: PositionTable):
+    def insert_position(self, position: PositionTable):
         if not self._user_repo.get_account(position.codcli):
             return "Usuário não existe"
         with self.session(self.engine) as session:
