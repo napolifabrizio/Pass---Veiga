@@ -20,9 +20,9 @@ class UserService():
             treat_exception(error, 'UserService')
         return False
 
-    def login(self, email, password):
+    def login(self, user_login):
         try:
-            return self._user_repo.login(email, password)
+            return self._user_repo.login(user_login.email, user_login.password)
         except Exception as error:
             treat_exception(error, 'UserService')
         return False
