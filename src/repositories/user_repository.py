@@ -60,7 +60,7 @@ class UserRepo(Father):
         except Exception as error:
                 raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
-# ------------------ Positions ------------------ #
+# ------------------ Position ------------------ #
     def select_my_positions(self, codcli):
         try:
             with self.session(self.engine) as session:
