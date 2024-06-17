@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
 from models.UserLogin import UserLogin
-from models.UserLogin import UserLogin
 from config.connection import UserTable, PositionTable
 from services.user_service import UserService
 from services.admin_service import AdminService
