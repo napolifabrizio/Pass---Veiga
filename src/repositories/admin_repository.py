@@ -2,14 +2,17 @@ import traceback
 
 from config.connection import PositionTable, UserTable
 from repositories.father import Father
-from repositories.position_manager_repository import PositionManagerRepo
 from repositories.user_repository import UserRepo
+from repositories.user_repository import UserRepo
+
+# O propósito dessa classe responde essa questão:
+# O que o admin pode fazer no banco de dados?
 
 class AdminRepo(Father):
 
     def __init__(self) -> None:
         self._user_repo = UserRepo()
-        self._position_manager = PositionManagerRepo()
+        self._position_manager = UserRepo()
         super().__init__()
 
     def insert_user(self, user: UserTable):
@@ -18,13 +21,13 @@ class AdminRepo(Father):
             session.commit()
         return True
 
-    def select_all_accounts(self):
+    def select_all_users(self):
         with self.session(self.engine) as session:
             statement = self.select(PositionTable)
             result = session.exec(statement).all()
         return result
 
-    def select_account_positions(self, codcli):
+    def select_user_positions(self, codcli):
         with self.session(self.engine) as session:
             try:
                 statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
