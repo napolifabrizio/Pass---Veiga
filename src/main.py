@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from config.connection import UserTable, PositionTable
 from services.user_service import UserService
@@ -22,6 +22,8 @@ def post_user(user: UserTable):
 
 @app.post("/user/login/{email}/{password}")
 def post_login_user(email, password):
+    if not user_service.login(email, password):
+        raise HTTPException(status_code=404, detail="Email ou senha incorretos")
     return user_service.login(email, password)
 
 @app.delete("/user/delete_my_account/{codcli}")

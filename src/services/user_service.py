@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from config.connection import PositionTable
 from repositories.position_manager_repository import PositionManagerRepo
 from repositories.user_repository import UserRepo
@@ -49,10 +51,21 @@ class UserService():
         except Exception as error:
             treat_exception(error, 'UserService')
 
-    def update_position(self, id_password, new_position):
+    def update_position(self, id_position, new_position):
         try:
-            self._position_manager_repo.put_position(id_password, new_position)
+            if new_position.password:
+                old_position_key = self.get_my_position(id_position).key
+                new_position.password = self._crypt.cripto(new_position.password, old_position_key)
+            self._position_manager_repo.put_position(id_position, new_position)
             return True
+        except Exception as error:
+            treat_exception(error, 'UserService')
+
+    def get_my_position(self, id_position):
+        try:
+            my_position = self._position_manager_repo.get_account_position(id_position)
+            my_position.password = self._crypt.decrypt(my_position.password, my_position.key)
+            return my_position
         except Exception as error:
             treat_exception(error, 'UserService')
 

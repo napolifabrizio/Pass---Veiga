@@ -11,11 +11,14 @@ class PositionManagerRepo(Father):
 
     def get_account_positions(self, codcli):
         with self.session(self.engine) as session:
-            try:
                 statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
                 result = session.exec(statement).all()
-            except:
-                return 'Não encontrado :('
+        return result
+
+    def get_account_position(self, id_position):
+        with self.session(self.engine) as session:
+                statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
+                result = session.exec(statement).one()
         return result
 
     def insert_position(self, position: PositionTable):
