@@ -16,10 +16,11 @@ class UserRepo(Father):
             with self.session(self.engine) as session:
                 session.add(user)
                 session.commit()
-                return_user = self.get_account(user.codcli)
+                return_user = self.select_my_user(user.codcli)
             return return_user
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                return False
 
     def login(self, email, password):
         try:
@@ -36,6 +37,7 @@ class UserRepo(Father):
                     "codcli": user_login.codcli,
                     "name": user_login.name
                 }
+            return False
         except Exception as error:
                 raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
@@ -81,14 +83,14 @@ class UserRepo(Father):
 
     def insert_position(self, position: PositionTable):
         try:
-            if not self._user_repo.get_account(position.codcli):
+            if not self.select_my_user(position.codcli):
                 return "Usuário não existe"
             with self.session(self.engine) as session:
                 session.add(position)
                 session.commit()
             return True
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def update_my_position(self, id_position, new_position):
         try:
@@ -105,7 +107,7 @@ class UserRepo(Father):
                 session.add(old_position)
                 session.commit()
                 session.refresh(old_position)
-            return "Position atualizado!"
+            return True
         except Exception as error:
                 raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
@@ -117,9 +119,9 @@ class UserRepo(Father):
                 position = result.one()
                 session.delete(position)
                 session.commit()
-            return "Position deletada!"
+            return True
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def delete_all_my_positions(self, codcli):
         try:
@@ -130,6 +132,6 @@ class UserRepo(Father):
                 for position in positions:
                     session.delete(position)
                 session.commit()
-            return "Todas positions deletadas!"
+            return True
         except Exception as error:
                 raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')

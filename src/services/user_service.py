@@ -18,9 +18,9 @@ class UserService():
             treat_exception(error, 'UserService')
         return False
 
-    def login(self, email, password):
+    def login(self, user_login):
         try:
-            return self._user_repo.login(email, password)
+            return self._user_repo.login(user_login.email, user_login.password)
         except Exception as error:
             treat_exception(error, 'UserService')
         return False
@@ -29,16 +29,24 @@ class UserService():
         try:
             self._user_repo.delete_all_my_positions(codcli)
             self._user_repo.delete_my_user(codcli)
+            return True
         except Exception as error:
             treat_exception(error, 'UserService')
         return False
 
     def get_my_positions(self, codcli):
         try:
+            show_positions = []
             my_positions = self._user_repo.select_my_positions(codcli)
             for position in my_positions:
                 position.password = self._crypt.decrypt(position.password, position.key)
-            return my_positions
+                show_positions.append(
+                    {
+                        "name": position.name,
+                        "password": position.password
+                    }
+                )
+            return show_positions
         except Exception as error:
             treat_exception(error, 'UserService')
         return False

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
+from models.UserLogin import UserLogin
 from config.connection import UserTable, PositionTable
 from services.user_service import UserService
 from services.admin_service import AdminService
@@ -19,38 +20,45 @@ async def root():
 
 @app.post("/user/post_user")
 def post_user(user: UserTable):
-    return user_service.create_my_account(user)
+    if user_service.create_my_account(user):
+        return user_service.create_my_account(user)
+    raise HTTPException(status_code=500, detail="Error ao criar usuário")
 
-@app.post("/user/login/{email}/{password}")
-def post_login_user(email, password):
-    if not user_service.login(email, password):
-        raise HTTPException(status_code=404, detail="Email ou senha incorretos")
-    return user_service.login(email, password)
+@app.post("/user/login")
+def post_login_user(user_login: UserLogin):
+    if user_service.login(user_login):
+        return user_service.login(user_login)
+    raise HTTPException(status_code=404, detail="Email ou senha incorretos")
 
 @app.delete("/user/delete_my_account/{codcli}")
 def delete_my_account(codcli):
-    user_service.delete_my_account(codcli)
-    return "Conta deletada!"
+    if user_service.delete_my_account(codcli):
+        return "Conta deletada!"
+    raise HTTPException(status_code=500, detail="Erro ao deletar sua conta")
 
 @app.get("/user/get_my_positions/{codcli}")
 def get_my_positions(codcli):
-    my_positions = user_service.get_my_positions(codcli)
+    if not (my_positions := user_service.get_my_positions(codcli)):
+        raise HTTPException(status_code=500, detail="Erro ao buscar suas positions")
     return my_positions
 
 @app.post("/user/post_position")
 def post_position(position: PositionTable):
-    user_service.create_position(position)
-    return "Position criado!"
+    if user_service.create_position(position):
+        return "Position criado!"
+    raise HTTPException(status_code=500, detail="Error ao criar position")
 
 @app.put("/user/put_position/{id_position}")
 def put_position(id_position, position: PositionTable):
-    user_service.update_my_position(id_position, position)
-    return "Position atualizado!"
+    if user_service.update_my_position(id_position, position):
+        return "Position atualizado!"
+    raise HTTPException(status_code=500, detail="Error ao atualizar position")
 
 @app.delete("/user/delete_position/{id}")
 def delete_position(id):
-    user_service.delete_my_position(id)
-    return "Position deletado!"
+    if user_service.delete_my_position(id):
+        return "Position deletado!"
+    raise HTTPException(status_code=500, detail="Error ao deletar position")
 
 #--------------------------------------------------#
 #                      Admin                       #
