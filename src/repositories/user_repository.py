@@ -11,7 +11,7 @@ class UserRepo(Father):
         super().__init__()
 
 # ------------------ Usuário ------------------ #
-    def insert_user(self, user: UserTable):
+    def insert_my_user(self, user: UserTable):
         try:
             with self.session(self.engine) as session:
                 session.add(user)
@@ -19,94 +19,117 @@ class UserRepo(Father):
                 return_user = self.get_account(user.codcli)
             return return_user
         except Exception as error:
-                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
-        return False
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def login(self, email, password):
-        user_login = ''
-        with self.session(self.engine) as session:
-            statement = self.select(UserTable)
-            users = session.exec(statement).all()
-        for user in users:
-            if email == user.email:
-                user_login = user
-                break
-        if password == user_login.password:
-            return {
-                "codcli": user_login.codcli,
-                "name": user_login.name
-            }
-        return False
+        try:
+            user_login = ''
+            with self.session(self.engine) as session:
+                statement = self.select(UserTable)
+                users = session.exec(statement).all()
+            for user in users:
+                if email == user.email:
+                    user_login = user
+                    break
+            if password == user_login.password:
+                return {
+                    "codcli": user_login.codcli,
+                    "name": user_login.name
+                }
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
-    def get_account(self, codcli):
+    def select_my_user(self, codcli):
         with self.session(self.engine) as session:
             try:
                 statement = self.select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement).one()
-                print(result)
                 return result
             except Exception as error:
-                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def delete_my_user(self, codcli):
-        with self.session(self.engine) as session:
-            statement = self.select(UserTable).where(UserTable.codcli == codcli)
-            result = session.exec(statement)
-            password = result.one()
-            session.delete(password)
-            session.commit()
+        try:
+            with self.session(self.engine) as session:
+                statement = self.select(UserTable).where(UserTable.codcli == codcli)
+                result = session.exec(statement)
+                password = result.one()
+                session.delete(password)
+                session.commit()
+            return "Usuário deletado!"
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
 # ------------------ Positions ------------------ #
     def select_my_positions(self, codcli):
-        with self.session(self.engine) as session:
-                statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
-                result = session.exec(statement).all()
-        return result
+        try:
+            with self.session(self.engine) as session:
+                    statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
+                    result = session.exec(statement).all()
+            return result
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def select_my_position(self, id_position):
-        with self.session(self.engine) as session:
-                statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
-                result = session.exec(statement).one()
-        return result
+        try:
+            with self.session(self.engine) as session:
+                    statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
+                    result = session.exec(statement).one()
+            return result
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def insert_position(self, position: PositionTable):
-        if not self._user_repo.get_account(position.codcli):
-            return "Usuário não existe"
-        with self.session(self.engine) as session:
-            session.add(position)
-            session.commit()
-        return True
+        try:
+            if not self._user_repo.get_account(position.codcli):
+                return "Usuário não existe"
+            with self.session(self.engine) as session:
+                session.add(position)
+                session.commit()
+            return True
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
-    def update_position(self, id_position, new_position):
-        with self.session(self.engine) as session:
-            statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
-            result = session.exec(statement)
-            old_position = result.one()
+    def update_my_position(self, id_position, new_position):
+        try:
+            with self.session(self.engine) as session:
+                statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
+                result = session.exec(statement)
+                old_position = result.one()
 
-            if new_position.name != None:
-                old_position.name = new_position.name
-            if new_position.password != None:
-                old_position.password = new_position.password
+                if new_position.name != None:
+                    old_position.name = new_position.name
+                if new_position.password != None:
+                    old_position.password = new_position.password
 
-            session.add(old_position)
-            session.commit()
-            session.refresh(old_position)
+                session.add(old_position)
+                session.commit()
+                session.refresh(old_position)
+            return "Position atualizado!"
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
-        return True
-
-    def delete_position(self, id_position):
-        with self.session(self.engine) as session:
-            statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
-            result = session.exec(statement)
-            position = result.one()
-            session.delete(position)
-            session.commit()
+    def delete_my_position(self, id_position):
+        try:
+            with self.session(self.engine) as session:
+                statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
+                result = session.exec(statement)
+                position = result.one()
+                session.delete(position)
+                session.commit()
+            return "Position deletada!"
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def delete_all_my_positions(self, codcli):
-        with self.session(self.engine) as session:
-            statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
-            result = session.exec(statement)
-            positions = result.all()
-            for position in positions:
-                session.delete(position)
-            session.commit()
+        try:
+            with self.session(self.engine) as session:
+                statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
+                result = session.exec(statement)
+                positions = result.all()
+                for position in positions:
+                    session.delete(position)
+                session.commit()
+            return "Todas positions deletadas!"
+        except Exception as error:
+                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')

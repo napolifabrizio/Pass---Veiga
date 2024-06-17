@@ -8,6 +8,7 @@ app = FastAPI()
 
 user_service = UserService()
 admin_service = AdminService()
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -43,12 +44,12 @@ def post_position(position: PositionTable):
 
 @app.put("/user/put_position/{id_position}")
 def put_position(id_position, position: PositionTable):
-    user_service.update_position(id_position, position)
+    user_service.update_my_position(id_position, position)
     return "Position atualizado!"
 
 @app.delete("/user/delete_position/{id}")
 def delete_position(id):
-    user_service.delete_position(id)
+    user_service.delete_my_position(id)
     return "Position deletado!"
 
 #--------------------------------------------------#
