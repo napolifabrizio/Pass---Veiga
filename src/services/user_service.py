@@ -34,7 +34,7 @@ class UserService():
 
     def get_my_positions(self, codcli):
         try:
-            my_positions = self._position_manager_repo.select_account_positions(codcli)
+            my_positions = self._position_manager_repo.get_account_positions(codcli)
             for position in my_positions:
                 position.password = self._crypt.decrypt(position.password, position.key)
         except Exception as error:
@@ -51,7 +51,7 @@ class UserService():
 
     def update_position(self, id_password, new_position):
         try:
-            self._position_manager_repo.update_position(id_password, new_position)
+            self._position_manager_repo.put_position(id_password, new_position)
             return True
         except Exception as error:
             treat_exception(error, 'UserService')

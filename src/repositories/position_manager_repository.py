@@ -28,7 +28,7 @@ class PositionManagerRepo(Father):
 
     def put_position(self, id_position, new_position):
         with self.session(self.engine) as session:
-            statement = self.select(PositionTable).where(PositionTable.id == id_position)
+            statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
             result = session.exec(statement)
             old_position = result.one()
 
@@ -45,7 +45,7 @@ class PositionManagerRepo(Father):
 
     def delete_position(self, id_position):
         with self.session(self.engine) as session:
-            statement = self.select(PositionTable).where(PositionTable.id == id_position)
+            statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
             result = session.exec(statement)
             position = result.one()
             session.delete(position)
