@@ -24,12 +24,11 @@ def post_user(user: UserTable):
         return user_service.create_my_account(user)
     raise HTTPException(status_code=500, detail="Error ao criar usuário")
 
-@app.post("/user/login")
+@app.post("/user/login/")
 def post_login_user(user_login: UserLogin):
-    if user_service.login(user_login):
-        return user_service.login(user_login)
-    else:
+    if not user_service.login(user_login):
         raise HTTPException(status_code=404, detail="Email ou senha incorretos")
+    return user_service.login(user_login)
 
 @app.delete("/user/delete_my_account/{codcli}")
 def delete_my_account(codcli):
