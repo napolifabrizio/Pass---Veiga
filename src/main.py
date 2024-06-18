@@ -28,37 +28,42 @@ def post_user(user: UserTable):
 def post_login_user(user_login: UserLogin):
     if user_service.login(user_login):
         return user_service.login(user_login)
-    raise HTTPException(status_code=404, detail="Email ou senha incorretos")
+    else:
+        raise HTTPException(status_code=404, detail="Email ou senha incorretos")
 
 @app.delete("/user/delete_my_account/{codcli}")
 def delete_my_account(codcli):
     if user_service.delete_my_account(codcli):
         return "Conta deletada!"
-    raise HTTPException(status_code=500, detail="Erro ao deletar sua conta")
+    else:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
 @app.get("/user/get_my_positions/{codcli}")
 def get_my_positions(codcli):
     if not (my_positions := user_service.get_my_positions(codcli)):
-        raise HTTPException(status_code=500, detail="Erro ao buscar suas positions")
+        raise HTTPException(status_code=404, detail="Positions não encontrados")
     return my_positions
 
 @app.post("/user/post_position")
 def post_position(position: PositionTable):
     if user_service.create_position(position):
         return "Position criado!"
-    raise HTTPException(status_code=500, detail="Error ao criar position")
+    else:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
 @app.put("/user/put_position/{id_position}")
 def put_position(id_position, position: PositionTable):
     if user_service.update_my_position(id_position, position):
         return "Position atualizado!"
-    raise HTTPException(status_code=500, detail="Error ao atualizar position")
+    else:
+        raise HTTPException(status_code=404, detail="Position não encontrado")
 
 @app.delete("/user/delete_position/{id}")
 def delete_position(id):
     if user_service.delete_my_position(id):
         return "Position deletado!"
-    raise HTTPException(status_code=500, detail="Error ao deletar position")
+    else:
+        raise HTTPException(status_code=404, detail="Position não encontrado")
 
 #--------------------------------------------------#
 #                      Admin                       #

@@ -27,17 +27,21 @@ class UserService():
 
     def delete_my_account(self, codcli):
         try:
+            if not (self._user_repo.delete_all_my_positions(codcli) and self._user_repo.delete_my_user(codcli)):
+                return False
             self._user_repo.delete_all_my_positions(codcli)
             self._user_repo.delete_my_user(codcli)
             return True
         except Exception as error:
             treat_exception(error, 'UserService')
-        return False
+
 
     def get_my_positions(self, codcli):
         try:
             show_positions = []
             my_positions = self._user_repo.select_my_positions(codcli)
+            if not my_positions:
+                return False
             for position in my_positions:
                 position.password = self._crypt.decrypt(position.password, position.key)
                 show_positions.append(
@@ -49,20 +53,22 @@ class UserService():
             return show_positions
         except Exception as error:
             treat_exception(error, 'UserService')
-        return False
 
     def create_position(self, position: PositionTable):
         try:
             position.key = self._crypt.key
             position.password = self._crypt.cripto(position.password, position.key)
+            if not self._user_repo.insert_position(position):
+                return False
             self._user_repo.insert_position(position)
             return True
         except Exception as error:
             treat_exception(error, 'UserService')
-        return False
 
     def update_my_position(self, id_position, new_position):
         try:
+            if not self.get_my_position(id_position):
+                return False
             if new_position.password:
                 old_position_key = self.get_my_position(id_position).key
                 new_position.password = self._crypt.cripto(new_position.password, old_position_key)
@@ -70,10 +76,11 @@ class UserService():
             return True
         except Exception as error:
             treat_exception(error, 'UserService')
-        return False
 
     def get_my_position(self, id_position):
         try:
+            if not self._user_repo.select_my_position(id_position):
+                return False
             my_position = self._user_repo.select_my_position(id_position)
             my_position.password = self._crypt.decrypt(my_position.password, my_position.key)
             return my_position
@@ -83,6 +90,8 @@ class UserService():
 
     def delete_my_position(self, id_password):
         try:
+            if not self._user_repo.delete_my_position(id_password):
+                return False
             self._user_repo.delete_my_position(id_password)
             return True
         except Exception as error:

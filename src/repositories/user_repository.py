@@ -39,28 +39,32 @@ class UserRepo(Father):
                 }
             return False
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def select_my_user(self, codcli):
         with self.session(self.engine) as session:
             try:
                 statement = self.select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement).one()
-                return result
+                if result:
+                    return result
+                return False
             except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def delete_my_user(self, codcli):
         try:
             with self.session(self.engine) as session:
                 statement = self.select(UserTable).where(UserTable.codcli == codcli)
                 result = session.exec(statement)
+                if not result:
+                     return False
                 password = result.one()
                 session.delete(password)
                 session.commit()
-            return "Usuário deletado!"
+            return True
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
 # ------------------ Position ------------------ #
     def select_my_positions(self, codcli):
@@ -68,23 +72,27 @@ class UserRepo(Father):
             with self.session(self.engine) as session:
                     statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
                     result = session.exec(statement).all()
+            if not result:
+                 return False
             return result
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def select_my_position(self, id_position):
         try:
             with self.session(self.engine) as session:
                     statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
                     result = session.exec(statement).one()
+            if not result:
+                 return False
             return result
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def insert_position(self, position: PositionTable):
         try:
             if not self.select_my_user(position.codcli):
-                return "Usuário não existe"
+                return False
             with self.session(self.engine) as session:
                 session.add(position)
                 session.commit()
@@ -97,6 +105,8 @@ class UserRepo(Father):
             with self.session(self.engine) as session:
                 statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
                 result = session.exec(statement)
+                if not result:
+                    return False
                 old_position = result.one()
 
                 if new_position.name != None:
@@ -109,13 +119,15 @@ class UserRepo(Father):
                 session.refresh(old_position)
             return True
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def delete_my_position(self, id_position):
         try:
             with self.session(self.engine) as session:
                 statement = self.select(PositionTable).where(PositionTable.id_position == id_position)
                 result = session.exec(statement)
+                if not result:
+                    return False
                 position = result.one()
                 session.delete(position)
                 session.commit()
@@ -128,10 +140,12 @@ class UserRepo(Father):
             with self.session(self.engine) as session:
                 statement = self.select(PositionTable).where(PositionTable.codcli == codcli)
                 result = session.exec(statement)
+                if not result:
+                    return False
                 positions = result.all()
                 for position in positions:
                     session.delete(position)
                 session.commit()
             return True
         except Exception as error:
-                raise(f'Um erro desconhecido aconteceu no UserRepo: {error}')
+                print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
