@@ -46,8 +46,9 @@ class UserService():
                 position.password = self._crypt.decrypt(position.password, position.key)
                 show_positions.append(
                     {
-                        "name": position.name,
-                        "password": position.password
+                        "Service Name": position.service_name,
+                        "Service Email": position.service_email,
+                        "Password": position.password
                     }
                 )
             return show_positions

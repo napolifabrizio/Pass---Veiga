@@ -4,7 +4,7 @@ from typing import Optional, Union
 class UserTable(SQLModel, table=True):
 
     codcli: Optional[int] = Field(primary_key=True)
-    name: Union[str, None]
+    service: Union[str, None]
     email: str = Field(unique=True)
     password: Union[str, None]
     is_admin: bool
@@ -13,7 +13,8 @@ class PositionTable(SQLModel, table=True):
 
     id_position: Optional[int] = Field(primary_key=True)
     codcli: int = Field(foreign_key="usertable.codcli")
-    name: Union[str, None]
+    service_name: Union[str, None]
+    service_email: Union[str, None]
     password: Union[bytes, None]
     key: bytes
 

@@ -35,19 +35,19 @@ class UserRepo(Father):
             if password == user_login.password:
                 return {
                     "codcli": user_login.codcli,
-                    "name": user_login.name
+                    "service": user_login.service
                 }
             return False
         except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
 
     def select_my_user(self, codcli):
-        with self.session(self.engine) as session:
             try:
-                statement = self.select(UserTable).where(UserTable.codcli == codcli)
-                result = session.exec(statement).one()
-                if result:
-                    return result
+                with self.session(self.engine) as session:
+                    statement = self.select(UserTable).where(UserTable.codcli == codcli)
+                    result = session.exec(statement).one()
+                    if result:
+                        return result
                 return False
             except Exception as error:
                 print(f'Um erro desconhecido aconteceu no UserRepo: {error}')
@@ -109,8 +109,8 @@ class UserRepo(Father):
                     return False
                 old_position = result.one()
 
-                if new_position.name != None:
-                    old_position.name = new_position.name
+                if new_position.service != None:
+                    old_position.service = new_position.service
                 if new_position.password != None:
                     old_position.password = new_position.password
 
