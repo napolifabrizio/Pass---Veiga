@@ -4,7 +4,7 @@ from config.connection import PositionTable
 from repositories.user_repository import UserRepo
 from services.exceptions import treat_exception
 from services.crpt_service import CryptService
-
+from fastapi import  HTTPException, status
 class UserService():
 
     def __init__(self) -> None:
@@ -23,7 +23,7 @@ class UserService():
             return self._user_repo.login(user_login.email, user_login.password)
         except Exception as error:
             treat_exception(error, 'UserService')
-        return False
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Credenciais inválidas.")
 
     def delete_my_account(self, codcli):
         try:
@@ -46,9 +46,10 @@ class UserService():
                 position.password = self._crypt.decrypt(position.password, position.key)
                 show_positions.append(
                     {
-                        "Service Name": position.service_name,
-                        "Service Email": position.service_email,
-                        "Password": position.password
+                        "id_position":position.id_position,
+                        "service_name": position.service_name,
+                        "service_email": position.service_email,
+                        "password": position.password
                     }
                 )
             return show_positions

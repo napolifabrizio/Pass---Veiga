@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from models.UserLogin import UserLogin
 from config.connection import UserTable, PositionTable
@@ -6,6 +7,17 @@ from services.user_service import UserService
 from services.admin_service import AdminService
 
 app = FastAPI()
+origins = [
+    "http://localhost:5173",  # Substitua pela URL do seu frontend
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 user_service = UserService()
 admin_service = AdminService()
@@ -40,7 +52,7 @@ def delete_my_account(codcli):
 @app.get("/user/get_my_positions/{codcli}")
 def get_my_positions(codcli):
     if not (my_positions := user_service.get_my_positions(codcli)):
-        raise HTTPException(status_code=404, detail="Positions não encontrados")
+        raise HTTPException(status_code=204, detail="Positions não encontrados")
     return my_positions
 
 @app.post("/user/post_position")

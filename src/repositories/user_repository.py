@@ -35,7 +35,11 @@ class UserRepo(Father):
             if password == user_login.password:
                 return {
                     "codcli": user_login.codcli,
-                    "service": user_login.service
+                    "is_admin": user_login.is_admin,
+                    "email":user_login.email,
+                    "name":user_login.name,
+                   
+                 
                 }
             return False
         except Exception as error:
@@ -109,8 +113,10 @@ class UserRepo(Father):
                     return False
                 old_position = result.one()
 
-                if new_position.service != None:
-                    old_position.service = new_position.service
+                if new_position.service_email != None:
+                    old_position.service_email = new_position.service_email
+                if new_position.service_name != None:
+                    old_position.service_name = new_position.service_name
                 if new_position.password != None:
                     old_position.password = new_position.password
 
