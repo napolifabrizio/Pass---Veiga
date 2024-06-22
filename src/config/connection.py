@@ -6,7 +6,7 @@ class UserTable(SQLModel, table=True):
     codcli: Optional[int] = Field(primary_key=True)
     email: str = Field(unique=True)
     name: Union[str, None]
-    password: Union[str, None]
+    password: Union[bytes, None]
     is_admin: bool
 
 class PositionTable(SQLModel, table=True):
@@ -16,7 +16,16 @@ class PositionTable(SQLModel, table=True):
     service_name: Union[str, None]
     service_email: Union[str, None]
     password: Union[bytes, None]
-    key: bytes
+
+class KeyUser(SQLModel, table=True):
+
+    id_user: int = Field(foreign_key="usertable.codcli")
+    key_user: bytes
+
+class KeyPosition(SQLModel, table=True):
+
+    id_position: int = Field(foreign_key="positiontable.id_position")
+    key_position: bytes
 
 engine = create_engine("sqlite:///database.sqlite")
 

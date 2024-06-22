@@ -1,6 +1,5 @@
-from config.connection import PositionTable
+from config.connection import PositionTable, UserTable
 from repositories.father import Father
-from config.connection import UserTable
 
 # O propósito dessa classe responde essa questão:
 # O que o usuário pode fazer no banco de dados?
@@ -38,8 +37,8 @@ class UserRepo(Father):
                     "is_admin": user_login.is_admin,
                     "email":user_login.email,
                     "name":user_login.name,
-                   
-                 
+
+
                 }
             return False
         except Exception as error:
