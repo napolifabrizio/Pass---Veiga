@@ -38,8 +38,6 @@ class UserRepo(Father):
                     "is_admin": user_login.is_admin,
                     "email":user_login.email,
                     "name":user_login.name,
-                   
-                 
                 }
             return False
         except Exception as error:

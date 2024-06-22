@@ -11,6 +11,8 @@ class UserService():
         self._crypt = CryptService()
         self._user_repo = UserRepo()
 
+# -------------------- USER --------------------- #
+
     def create_my_account(self, user):
         try:
             return self._user_repo.insert_my_user(user)
@@ -35,6 +37,7 @@ class UserService():
         except Exception as error:
             treat_exception(error, 'UserService')
 
+# -------------------- Positions --------------------- #
 
     def get_my_positions(self, codcli):
         try:
